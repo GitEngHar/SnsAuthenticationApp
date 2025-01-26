@@ -1,3 +1,22 @@
 spring:
   application:
     name: "SnsAuthenticationApp"
+lineauth:
+  response_type: "code"
+  client_id: ${CLIENT_ID}
+  redirect_uri: ${REDIRECT_URI}
+  # state
+  scope: "profile"
+  # nonce
+  #  prompt
+  #  max_age
+  #  ui_locales
+  #  bot_prompt
+  #  initial_amr_display
+  #  switch_amr
+  #  disable_auto_login
+  #  disable_ios_auto_login
+  #  code_challenge
+  #  code_challenge_method
+
+
