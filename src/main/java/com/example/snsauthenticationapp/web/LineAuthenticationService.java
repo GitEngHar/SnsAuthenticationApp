@@ -1,14 +1,14 @@
 package com.example.snsauthenticationapp.web;
 
-import com.example.snsauthenticationapp.config.LineAuthConfig;
-import com.example.snsauthenticationapp.domain.LineAuthElement;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.springframework.stereotype.Service;
-import org.apache.http.client.utils.URIBuilder;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Service;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.commons.lang3.RandomStringUtils;
+import com.example.snsauthenticationapp.domain.LineAuthElement;
+
 
 
 /**
@@ -27,23 +27,36 @@ public class LineAuthenticationService {
      * */
     public String createRedirectURL() {
         try {
+            // csrf検証用 stringを生成
+            lineAuthElement.setState(createUniqueState());
+
+            // 認証用リダイレクトパラメータを生成
             List<NameValuePair> params = new ArrayList<>();
             params.add(new BasicNameValuePair("response_type", lineAuthElement.getResponseType()));
             params.add(new BasicNameValuePair("client_id", lineAuthElement.getClientId()));
             params.add(new BasicNameValuePair("redirect_uri", lineAuthElement.getRedirectUri()));
             params.add(new BasicNameValuePair("scope", lineAuthElement.getScope()));
+            params.add(new BasicNameValuePair("state", lineAuthElement.getState()));
 
+            // 認証用ドメインを生成
             URIBuilder builder = new URIBuilder();
             builder.setScheme("https");
             builder.setHost("access.line.me");
             builder.setPath("oauth2/v2.1/authorize");
+
+            // 認証用ドメインにパラメータを付与
             builder.setParameters(params);
 
+            // リダイレクトURIを生成
             return builder.build().toURL().toString();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
         }
+    }
+
+    private static String createUniqueState(){
+        return RandomStringUtils.randomAlphanumeric(20);
     }
 }
