@@ -7,18 +7,12 @@ import spock.lang.Specification
 
 @SpringBootTest
 class LineAuthenticationServiceSpec extends Specification {
-    /**
-     * 正しいURLが生成されるか
-     * 設定ファイルの値が正しく読み込まれるか
-     * state が動的に生成されること
-     * 不正な設定があった場合のエラーハンドリング
-     * 設定変更に基づいて生成されるURLが適切か
-     * 設定値が欠けている場合にエラーが発生するか
-     * */
-    // 環境変数 : CLIENT_ID=AAAA;REDIRECT_URI=hogehoge
+
     @Autowired
     private LineAuthElement lineAuthElement
-    def "環境変数が設定できいること" () {
+
+    def "環境変数が設定できていること" () {
+        // 環境変数 : CLIENT_ID=AAAA;REDIRECT_URI=hogehoge
         given:
         def sut = new LineAuthenticationService(this.lineAuthElement)
         when:
