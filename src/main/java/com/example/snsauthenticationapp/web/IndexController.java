@@ -13,7 +13,7 @@ public class IndexController {
 
     /** トップページ */
     @GetMapping("")
-    public String index(Model model) {
+    public String index() {
         return "index";
     }
 
